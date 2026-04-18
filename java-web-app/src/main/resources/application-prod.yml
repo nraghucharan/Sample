@@ -1,0 +1,45 @@
+# Production profile — connects to AWS RDS
+# All sensitive values are read from environment variables set on the EC2 instance
+spring:
+  datasource:
+    # Set these on your EC2 instance:
+    #   export DB_HOST=your-rds-endpoint.rds.amazonaws.com
+    #   export DB_PORT=3306          (MySQL) or 5432 (PostgreSQL)
+    #   export DB_NAME=your_db_name
+    #   export DB_USERNAME=your_db_user
+    #   export DB_PASSWORD=your_db_password
+    #
+    # --- MySQL ---
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT:3306}/${DB_NAME}?useSSL=true&requireSSL=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #
+    # --- PostgreSQL (comment out MySQL above, uncomment below) ---
+    # url: jdbc:postgresql://${DB_HOST}:${DB_PORT:5432}/${DB_NAME}?sslmode=require
+    # driver-class-name: org.postgresql.Driver
+
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    # --- MySQL ---
+    database-platform: org.hibernate.dialect.MySQLDialect
+    # --- PostgreSQL ---
+    # database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate   # Use 'update' first deploy, then switch to 'validate'
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 20
+
+logging:
+  level:
+    com.webapp: INFO
+    org.hibernate: WARN

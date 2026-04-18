@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Dashboard – MyApp</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<nav class="navbar">
+    <a class="nav-brand" th:href="@{/}">MyApp</a>
+    <div class="nav-links">
+        <a th:href="@{/dashboard}">Dashboard</a>
+        <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin</a>
+        <form th:action="@{/logout}" method="post" style="display:inline;">
+            <button type="submit" class="btn-link">Logout</button>
+        </form>
+    </div>
+</nav>
+<div class="container">
+    <div class="dashboard">
+        <h1>Welcome back, <span th:text="${username}">User</span>!</h1>
+        <p>You are successfully logged in to your dashboard.</p>
+
+        <div class="card-grid">
+            <div class="card">
+                <h3>Profile</h3>
+                <p>Manage your account settings and preferences.</p>
+            </div>
+            <div class="card">
+                <h3>Activity</h3>
+                <p>View your recent activity and history.</p>
+            </div>
+            <div class="card">
+                <h3>Settings</h3>
+                <p>Configure your application settings.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
