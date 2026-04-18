@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Home – MyApp</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<nav class="navbar">
+    <a class="nav-brand" th:href="@{/}">MyApp</a>
+    <div class="nav-links">
+        <span sec:authorize="isAuthenticated()">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="btn-link">Logout</button>
+            </form>
+        </span>
+        <span sec:authorize="isAnonymous()">
+            <a th:href="@{/login}">Login</a>
+            <a th:href="@{/register}">Register</a>
+        </span>
+    </div>
+</nav>
+<div class="container">
+    <div class="hero">
+        <h1>Welcome to MyApp</h1>
+        <p>A full-stack Spring Boot application hosted on AWS EC2.</p>
+        <div class="hero-actions">
+            <a th:href="@{/register}" class="btn btn-primary" sec:authorize="isAnonymous()">Get Started</a>
+            <a th:href="@{/dashboard}" class="btn btn-primary" sec:authorize="isAuthenticated()">Go to Dashboard</a>
+            <a th:href="@{/login}" class="btn btn-outline" sec:authorize="isAnonymous()">Login</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
